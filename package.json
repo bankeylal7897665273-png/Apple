@@ -1,7 +1,6 @@
 {
-  "name": "web-phone-os",
+  "name": "proxy-phone-os",
   "version": "1.0.0",
-  "description": "Full Stack Web Phone",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
