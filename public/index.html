@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VIP Web Phone OS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0d0d0d; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        
+        /* Phone Container with Dark Neon Aesthetic */
+        .phone {
+            width: 375px; height: 812px;
+            background: #121212;
+            border-radius: 40px;
+            border: 6px solid #1f1f1f;
+            position: relative;
+            box-shadow: 0 0 40px rgba(138, 43, 226, 0.4), inset 0 0 20px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        .notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 140px; height: 25px; background-color: #000;
+            border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 100;
+        }
+
+        /* Glassmorphism Home Screen */
+        .home-screen {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 15px;
+            padding: 60px 20px 20px 20px; height: calc(100% - 90px);
+            align-content: start; background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+
+        .app-icon {
+            display: flex; flex-direction: column; align-items: center;
+            color: #fff; font-size: 11px; cursor: pointer; text-align: center;
+        }
+        .app-icon img {
+            width: 55px; height: 55px; margin-bottom: 6px; border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(8px);
+            border: 1px solid rgba(138, 43, 226, 0.3); padding: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Full Screen Apps */
+        .app-window {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f0f13; z-index: 50; display: none; flex-direction: column;
+        }
+        .app-header {
+            padding: 35px 20px 15px 20px; background: rgba(15, 15, 19, 0.9);
+            backdrop-filter: blur(10px); color: #fff; display: flex;
+            justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.4);
+        }
+        .close-btn { color: #bf55ec; cursor: pointer; font-weight: bold; }
+        iframe { flex-grow: 1; border: none; width: 100%; background: #fff;}
+
+        /* Fake App Store UI */
+        .store-ui { padding: 20px; color: white; overflow-y: auto; flex-grow: 1; }
+        .store-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 15px;
+            margin-bottom: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .install-btn {
+            background: #bf55ec; color: white; border: none; padding: 8px 15px;
+            border-radius: 20px; font-weight: bold; cursor: pointer;
+        }
+
+        /* Dock */
+        .dock {
+            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+            width: 92%; height: 75px; background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(20px); border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-around; align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="phone">
+    <div class="notch"></div>
+    
+    <div class="home-screen" id="homeScreen">
+        </div>
+
+    <div class="dock">
+        <div class="app-icon" onclick="openApp('dialer')">
+            <img src="https://img.icons8.com/fluent/96/000000/phone.png" alt="Phone">
+        </div>
+        <div class="app-icon" onclick="openApp('safari')">
+            <img src="https://img.icons8.com/color/96/000000/safari--v1.png" alt="Browser">
+        </div>
+        <div class="app-icon" onclick="openApp('store')">
+            <img src="https://img.icons8.com/color/96/000000/mac-os--v1.png" alt="Store">
+        </div>
+    </div>
+
+    <div class="app-window" id="appWindow">
+        <div class="app-header">
+            <div class="close-btn" onclick="closeApp()">Back</div>
+            <div id="appTitle">App</div>
+            <div></div>
+        </div>
+        
+        <iframe id="appFrame" src="" style="display:none;"></iframe>
+        
+        <div class="store-ui" id="storeUI" style="display:none;">
+            <h2>App Store (Render Storage)</h2><br>
+            <div class="store-item">
+                <div>
+                    <h3>YouTube VIP</h3>
+                    <p style="font-size:12px; color:gray;">100% Working Embed</p>
+                </div>
+                <button class="install-btn" onclick="installApp('yt', 'YouTube', 'https://img.icons8.com/color/96/youtube-play.png', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">GET</button>
+            </div>
+            <div class="store-item">
+                <div>
+                    <h3>Google Search</h3>
+                    <p style="font-size:12px; color:gray;">Web Browser</p>
+                </div>
+                <button class="install-btn" onclick="installApp('google', 'Google', 'https://img.icons8.com/color/96/google-logo.png', 'https://www.bing.com')">GET</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Load installed apps from Node.js Server on startup
+    async function loadInstalledApps() {
+        const response = await fetch('/get_apps');
+        const apps = await response.json();
+        
+        const homeScreen = document.getElementById('homeScreen');
+        homeScreen.innerHTML = ''; 
+        
+        apps.forEach(app => {
+            homeScreen.innerHTML += `
+                <div class="app-icon" onclick="launchCustomApp('${app.name}', '${app.url}')">
+                    <img src="${app.icon}" alt="${app.name}">
+                    ${app.name}
+                </div>
+            `;
+        });
+    }
+
+    // Install app to server storage
+    async function installApp(id, name, icon, url) {
+        const btn = event.target;
+        btn.innerText = "Installing...";
+        
+        const response = await fetch('/install', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, name, icon, url })
+        });
+        
+        const result = await response.json();
+        if(result.success) {
+            btn.innerText = "Installed";
+            btn.style.background = "#333";
+            loadInstalledApps(); // Refresh home screen
+            alert(result.message);
+        }
+    }
+
+    function openApp(appType) {
+        document.getElementById('appWindow').style.display = 'flex';
+        let frame = document.getElementById('appFrame');
+        let store = document.getElementById('storeUI');
+        let title = document.getElementById('appTitle');
+
+        frame.style.display = 'none';
+        store.style.display = 'none';
+
+        if(appType === 'store') {
+            store.style.display = 'block';
+            title.innerText = 'App Store';
+        } else if(appType === 'safari') {
+            frame.style.display = 'block';
+            frame.src = 'https://www.bing.com'; // Bypassing iframe blocks for demo
+            title.innerText = 'Browser';
+        } else if(appType === 'dialer') {
+            // Placeholder for dialer logic
+            alert('Fake Number / Dialer module opened.');
+            closeApp();
+        }
+    }
+
+    function launchCustomApp(name, url) {
+        document.getElementById('appWindow').style.display = 'flex';
+        let frame = document.getElementById('appFrame');
+        document.getElementById('storeUI').style.display = 'none';
+        frame.style.display = 'block';
+        frame.src = url;
+        document.getElementById('appTitle').innerText = name;
+    }
+
+    function closeApp() {
+        document.getElementById('appWindow').style.display = 'none';
+        document.getElementById('appFrame').src = '';
+    }
+
+    // Initialize
+    loadInstalledApps();
+</script>
+</body>
+</html>
