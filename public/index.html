@@ -3,78 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VIP Web Phone OS</title>
+    <title>100% Working Virtual Phone OS</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0d0d0d; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
+        body { background-color: #0a0a0a; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
         
-        /* Phone Container with Dark Neon Aesthetic */
         .phone {
-            width: 375px; height: 812px;
-            background: #121212;
-            border-radius: 40px;
-            border: 6px solid #1f1f1f;
-            position: relative;
-            box-shadow: 0 0 40px rgba(138, 43, 226, 0.4), inset 0 0 20px rgba(0, 0, 0, 0.8);
-            overflow: hidden;
+            width: 375px; height: 812px; background: #111;
+            border-radius: 45px; border: 8px solid #222; position: relative;
+            box-shadow: 0 0 50px rgba(191, 85, 236, 0.3); overflow: hidden;
         }
 
         .notch {
             position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 140px; height: 25px; background-color: #000;
-            border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 100;
+            width: 150px; height: 28px; background: #000;
+            border-bottom-left-radius: 18px; border-bottom-right-radius: 18px; z-index: 100;
         }
 
-        /* Glassmorphism Home Screen */
         .home-screen {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 15px;
-            padding: 60px 20px 20px 20px; height: calc(100% - 90px);
-            align-content: start; background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 70px 20px 20px 20px; height: calc(100% - 95px);
+            background: linear-gradient(180deg, #0f172a, #020617);
         }
 
         .app-icon {
-            display: flex; flex-direction: column; align-items: center;
-            color: #fff; font-size: 11px; cursor: pointer; text-align: center;
+            display: flex; flex-direction: column; align-items: center; color: white; font-size: 11px; cursor: pointer;
         }
         .app-icon img {
-            width: 55px; height: 55px; margin-bottom: 6px; border-radius: 14px;
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(8px);
-            border: 1px solid rgba(138, 43, 226, 0.3); padding: 5px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            width: 55px; height: 55px; border-radius: 12px; margin-bottom: 5px;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Full Screen Apps */
+        /* Full Browser/App Window */
         .app-window {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0f0f13; z-index: 50; display: none; flex-direction: column;
+            background: #fff; z-index: 90; display: none; flex-direction: column;
         }
-        .app-header {
-            padding: 35px 20px 15px 20px; background: rgba(15, 15, 19, 0.9);
-            backdrop-filter: blur(10px); color: #fff; display: flex;
-            justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(138, 43, 226, 0.4);
+        
+        /* Custom Browser Top Bar */
+        .browser-bar {
+            padding: 35px 10px 10px 10px; background: #1e293b; display: flex; gap: 8px; align-items: center;
         }
-        .close-btn { color: #bf55ec; cursor: pointer; font-weight: bold; }
-        iframe { flex-grow: 1; border: none; width: 100%; background: #fff;}
+        .browser-bar input {
+            flex-grow: 1; padding: 6px 12px; border-radius: 20px; border: none; outline: none; font-size: 13px;
+        }
+        .browser-bar button {
+            background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 12px;
+        }
+        .back-home-btn { background: #ef4444 !important; }
 
-        /* Fake App Store UI */
-        .store-ui { padding: 20px; color: white; overflow-y: auto; flex-grow: 1; }
-        .store-item {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 15px;
-            margin-bottom: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .install-btn {
-            background: #bf55ec; color: white; border: none; padding: 8px 15px;
-            border-radius: 20px; font-weight: bold; cursor: pointer;
-        }
+        iframe { flex-grow: 1; border: none; width: 100%; height: 100%; background: white; }
 
-        /* Dock */
+        /* Store UI */
+        .store-container { padding: 20px; background: #0f172a; color: white; height: 100%; overflow-y: auto; }
+        .store-card {
+            background: #1e293b; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+        }
+        .store-card button { background: #10b981; color: white; border: none; padding: 6px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+
         .dock {
             position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-            width: 92%; height: 75px; background: rgba(20, 20, 25, 0.6);
+            width: 90%; height: 75px; background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(20px); border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; justify-content: space-around; align-items: center;
         }
     </style>
@@ -88,124 +78,109 @@
         </div>
 
     <div class="dock">
-        <div class="app-icon" onclick="openApp('dialer')">
-            <img src="https://img.icons8.com/fluent/96/000000/phone.png" alt="Phone">
-        </div>
-        <div class="app-icon" onclick="openApp('safari')">
+        <div class="app-icon" onclick="openBrowserApp()">
             <img src="https://img.icons8.com/color/96/000000/safari--v1.png" alt="Browser">
         </div>
-        <div class="app-icon" onclick="openApp('store')">
+        <div class="app-icon" onclick="openStoreApp()">
             <img src="https://img.icons8.com/color/96/000000/mac-os--v1.png" alt="Store">
         </div>
     </div>
 
     <div class="app-window" id="appWindow">
-        <div class="app-header">
-            <div class="close-btn" onclick="closeApp()">Back</div>
-            <div id="appTitle">App</div>
-            <div></div>
+        <div class="browser-bar">
+            <button class="back-home-btn" onclick="closeApp()">Exit</button>
+            <input type="text" id="webAddressInput" placeholder="Enter URL (e.g. https://google.com)">
+            <button onclick="launchProxyNav()">Go</button>
         </div>
         
-        <iframe id="appFrame" src="" style="display:none;"></iframe>
+        <iframe id="phoneIframe" src=""></iframe>
         
-        <div class="store-ui" id="storeUI" style="display:none;">
-            <h2>App Store (Render Storage)</h2><br>
-            <div class="store-item">
+        <div class="store-container" id="virtualStore" style="display: none;">
+            <h2>Cloud App Store (512MB)</h2><br>
+            <div class="store-card">
                 <div>
-                    <h3>YouTube VIP</h3>
-                    <p style="font-size:12px; color:gray;">100% Working Embed</p>
+                    <h4>Google Search Engine</h4>
+                    <p style="font-size: 11px; color: #94a3b8;">Real Working Search</p>
                 </div>
-                <button class="install-btn" onclick="installApp('yt', 'YouTube', 'https://img.icons8.com/color/96/youtube-play.png', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">GET</button>
+                <button onclick="triggerInstall('google', 'Google', 'https://img.icons8.com/color/96/google-logo.png', 'https://google.com')">Install</button>
             </div>
-            <div class="store-item">
+            <div class="store-card">
                 <div>
-                    <h3>Google Search</h3>
-                    <p style="font-size:12px; color:gray;">Web Browser</p>
+                    <h4>YouTube Proxy</h4>
+                    <p style="font-size: 11px; color: #94a3b8;">Watch Videos Internally</p>
                 </div>
-                <button class="install-btn" onclick="installApp('google', 'Google', 'https://img.icons8.com/color/96/google-logo.png', 'https://www.bing.com')">GET</button>
+                <button onclick="triggerInstall('youtube', 'YouTube', 'https://img.icons8.com/color/96/youtube-play.png', 'https://www.youtube.com')">Install</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Load installed apps from Node.js Server on startup
-    async function loadInstalledApps() {
-        const response = await fetch('/get_apps');
-        const apps = await response.json();
+    async function fetchApps() {
+        const res = await fetch('/get_apps');
+        const data = await res.json();
+        const screen = document.getElementById('homeScreen');
+        screen.innerHTML = '';
         
-        const homeScreen = document.getElementById('homeScreen');
-        homeScreen.innerHTML = ''; 
-        
-        apps.forEach(app => {
-            homeScreen.innerHTML += `
-                <div class="app-icon" onclick="launchCustomApp('${app.name}', '${app.url}')">
-                    <img src="${app.icon}" alt="${app.name}">
-                    ${app.name}
+        data.forEach(app => {
+            screen.innerHTML += `
+                <div class="app-icon" onclick="runAppInline('${app.url}')">
+                    <img src="${app.icon}">
+                    <span>${app.name}</span>
                 </div>
             `;
         });
     }
 
-    // Install app to server storage
-    async function installApp(id, name, icon, url) {
-        const btn = event.target;
-        btn.innerText = "Installing...";
-        
-        const response = await fetch('/install', {
+    function openBrowserApp() {
+        document.getElementById('appWindow').style.display = 'flex';
+        document.getElementById('virtualStore').style.display = 'none';
+        document.getElementById('phoneIframe').style.display = 'block';
+        document.getElementById('webAddressInput').value = 'https://google.com';
+        launchProxyNav();
+    }
+
+    function openStoreApp() {
+        document.getElementById('appWindow').style.display = 'flex';
+        document.getElementById('phoneIframe').style.display = 'none';
+        document.getElementById('virtualStore').style.display = 'block';
+    }
+
+    function launchProxyNav() {
+        let url = document.getElementById('webAddressInput').value;
+        if(!url.startsWith('http://') && !url.startsWith('https://')){
+            url = 'https://' + url;
+        }
+        // Routing via server proxy to secure bypass
+        document.getElementById('phoneIframe').src = `/proxy?url=${encodeURIComponent(url)}`;
+    }
+
+    function runAppInline(url) {
+        document.getElementById('appWindow').style.display = 'flex';
+        document.getElementById('virtualStore').style.display = 'none';
+        document.getElementById('phoneIframe').style.display = 'block';
+        document.getElementById('webAddressInput').value = url;
+        launchProxyNav();
+    }
+
+    async function triggerInstall(id, name, icon, url) {
+        const res = await fetch('/install', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id, name, icon, url })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id, name, icon, url})
         });
-        
-        const result = await response.json();
-        if(result.success) {
-            btn.innerText = "Installed";
-            btn.style.background = "#333";
-            loadInstalledApps(); // Refresh home screen
-            alert(result.message);
-        }
-    }
-
-    function openApp(appType) {
-        document.getElementById('appWindow').style.display = 'flex';
-        let frame = document.getElementById('appFrame');
-        let store = document.getElementById('storeUI');
-        let title = document.getElementById('appTitle');
-
-        frame.style.display = 'none';
-        store.style.display = 'none';
-
-        if(appType === 'store') {
-            store.style.display = 'block';
-            title.innerText = 'App Store';
-        } else if(appType === 'safari') {
-            frame.style.display = 'block';
-            frame.src = 'https://www.bing.com'; // Bypassing iframe blocks for demo
-            title.innerText = 'Browser';
-        } else if(appType === 'dialer') {
-            // Placeholder for dialer logic
-            alert('Fake Number / Dialer module opened.');
-            closeApp();
-        }
-    }
-
-    function launchCustomApp(name, url) {
-        document.getElementById('appWindow').style.display = 'flex';
-        let frame = document.getElementById('appFrame');
-        document.getElementById('storeUI').style.display = 'none';
-        frame.style.display = 'block';
-        frame.src = url;
-        document.getElementById('appTitle').innerText = name;
+        const status = await res.json();
+        alert(status.message);
+        fetchApps();
     }
 
     function closeApp() {
         document.getElementById('appWindow').style.display = 'none';
-        document.getElementById('appFrame').src = '';
+        document.getElementById('phoneIframe').src = '';
     }
 
-    // Initialize
-    loadInstalledApps();
+    // Startup
+    fetchApps();
 </script>
 </body>
 </html>
